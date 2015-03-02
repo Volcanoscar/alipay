@@ -43,7 +43,8 @@ public class RequestWrapper
 
     }
 
-    public final FrameData a(Context paramContext, Request paramRequest, boolean paramBoolean) throws NetErrorException, FailOperatingException, AppErrorException, UnZipException {
+    // 获取FrameData, old name a
+    public final FrameData getFrameData(Context paramContext, Request paramRequest, boolean paramBoolean) throws NetErrorException, FailOperatingException, AppErrorException, UnZipException {
         Response localResponse = new Response();
         Object localObject;
         if ((paramContext = a(paramContext, paramRequest, localResponse)).optBoolean("gzip")) {

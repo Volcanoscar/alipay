@@ -6,28 +6,32 @@ import org.json.JSONObject;
 
 public class FrameData
 {
-    private Request a;
-    private Response b;
-    private JSONObject c;
+    private Request mRequest;
+    private Response mResponse;
+    private JSONObject mJson;
 
-    public FrameData(Request paramRequest, Response paramResponse) {
-        this.a = paramRequest;
-        this.b = paramResponse;
+    public FrameData(Request request, Response response) {
+        this.mRequest = request;
+        this.mResponse = response;
     }
 
-    public final Request a() {
-        return this.a;
+    // old name a
+    public final Request getRequest() {
+        return this.mRequest;
     }
 
-    public final Response b() {
-        return this.b;
+    // old name b
+    public final Response getResponse() {
+        return this.mResponse;
     }
 
-    public final JSONObject c() {
-        return this.c;
+    // old name c
+    public final JSONObject getJson() {
+        return this.mJson;
     }
 
-    public void a(JSONObject paramJSONObject) {
-        this.c = paramJSONObject;
+    // old name a
+    public void setJson(JSONObject json) {
+        this.mJson = json;
     }
 }

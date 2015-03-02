@@ -125,7 +125,7 @@ public class PayTask
     public boolean checkAccountIfExist() {
         Request localRequest = FrameUtils.a();
         try {
-            return new RequestWrapper().a(this.b, localRequest, true).c().optBoolean("hasAccount", false);
+            return new RequestWrapper().getFrameData(this.b, localRequest, true).getJson().optBoolean("hasAccount", false);
         } catch (Exception localException) {
 
         }
@@ -149,7 +149,7 @@ public class PayTask
             return localPayHelper.a(this.c);
         }
         if (this.c.contains("\"")) {
-        return localPayHelper.a(this.c + "&bizcontext=\"{\"appkey\":\"2014052600006128\"}\"");
+            return localPayHelper.a(this.c + "&bizcontext=\"{\"appkey\":\"2014052600006128\"}\"");
         }
         return localPayHelper.a(this.c + "&bizcontext={\"appkey\":\"2014052600006128\"}");
     }

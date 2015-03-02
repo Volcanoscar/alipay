@@ -17,13 +17,13 @@ import com.alipay.sdk.app.Result;
 
 public class PayHelper
 {
-    private Activity b;
+    private Activity mActivity;
     private IAlixPay c;
     private Object d = IAlixPay.class;
 
     private boolean e = false;
     public static final String a = "failed";
-    private ServiceConnection f = new ServiceConnection() {
+    private ServiceConnection conn = new ServiceConnection() {
         public void onServiceDisconnected(ComponentName paramAnonymousComponentName) {
         PayHelper.a(PayHelper.this, null);
         }
@@ -37,7 +37,7 @@ public class PayHelper
         }
     };
 
-    private IRemoteServiceCallback g = new IRemoteServiceCallback.Stub() {
+    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
         public boolean isHideLoadingScreen() throws RemoteException {
             return false;
         }
@@ -63,30 +63,31 @@ public class PayHelper
     };
 
     public PayHelper(Activity paramActivity) {
-        this.b = paramActivity;
+        this.mActivity = paramActivity;
     }
 
     public final String a(String paramString) {
-            Object localObject;
-            if (((localObject = Utils.a(Utils.a(this.b, "com.eg.android.AlipayGphone"))) != null) && (!TextUtils.equals((CharSequence)localObject, "b6cbad6cbd5ed0d209afc69ad3b7a617efaae9b3c47eabe0be42d924936fa78c8001b1fd74b079e5ff9690061dacfa4768e981a526b9ca77156ca36251cf2f906d105481374998a7e6e6e18f75ca98b8ed2eaf86ff402c874cca0a263053f22237858206867d210020daa38c48b20cc9dfd82b44a51aeb5db459b22794e2d649"))) {
-                return Result.c();
-            }
+        Object localObject = Utils.a(Utils.a(this.mActivity, "com.eg.android.AlipayGphone"));
+        if ((localObject != null) && (!TextUtils.equals((CharSequence)localObject, "b6cbad6cbd5ed0d209afc69ad3b7a617efaae9b3c47eabe0be42d924936fa78c8001b1fd74b079e5ff9690061dacfa4768e981a526b9ca77156ca36251cf2f906d105481374998a7e6e6e18f75ca98b8ed2eaf86ff402c874cca0a263053f22237858206867d210020daa38c48b20cc9dfd82b44a51aeb5db459b22794e2d649"))) {
+            return Result.c();
+        }
 
-            (localObject = new Intent()).setClassName("com.eg.android.AlipayGphone", "com.alipay.android.app.MspService");
-            ((Intent)localObject).setAction("com.eg.android.AlipayGphone.IAlixPay");
-            return a(paramString, (Intent)localObject);
+        Intent intent = new Intent();
+        intent.setClassName("com.eg.android.AlipayGphone", "com.alipay.android.app.MspService");
+        intent.setAction("com.eg.android.AlipayGphone.IAlixPay");
+        return a(paramString, intent);
     }
 
-    private String a(String paramString, Intent arg2) {
+    private String a(String paramString, Intent intent) {
         String str = null;
 
         if (this.e) {
-        return "";
+            return "";
         }
         this.e = true;
 
         if (this.c == null) {
-            this.b.getApplicationContext().bindService(???, this.f, 1);
+            this.mActivity.getApplicationContext().bindService(intent, this.conn, 1);
         }
 
         try {
@@ -98,16 +99,17 @@ public class PayHelper
             if (this.c == null) {
                 return "failed";
             }
-            this.c.registerCallback(this.g);
+            this.c.registerCallback(this.mCallback);
             str = this.c.Pay(paramString);
 
-            this.c.unregisterCallback(this.g);
+            this.c.unregisterCallback(this.mCallback);
 
             this.c = null;
         } catch (Exception localException3) {
+
         } finally {
             try {
-                this.b.unbindService(this.f);
+                this.mActivity.unbindService(this.conn);
             } catch (Exception localException5) {
                 this.c = null;
             }
